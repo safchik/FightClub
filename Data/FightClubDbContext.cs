@@ -14,6 +14,7 @@ namespace FightClub.Data
         public DbSet<Character> Characters { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<CharacterItem> CharacterItems { get; set; }
+        public DbSet<MarketItem> MarketItems { get; set; }
         public DbSet<Battle> Battles { get; set; }
 
 
