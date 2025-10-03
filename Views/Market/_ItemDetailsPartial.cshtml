@@ -1,21 +1,25 @@
-﻿@model FightClub.Models.Item
-
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
 @{
-    ViewData["Title"] = "Item Details";
 }
+@model FightClub.Models.Item
 
-<div class="container mt-5">
-    <h2>@Model.Name</h2>
+<div class="modal-header">
+    <h5 class="modal-title">@Model.Name</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
     <p><strong>Type:</strong> @Model.ItemType</p>
     <p><strong>Attack:</strong> @Model.StatAttack</p>
     <p><strong>Defense:</strong> @Model.StatDefense</p>
     <p><strong>HP:</strong> @Model.StatHP</p>
     <p><strong>Price:</strong> @Model.Price gold</p>
-
+</div>
+<div class="modal-footer">
     <form asp-controller="Basket" asp-action="AddToBasket" method="post">
         <input type="hidden" name="id" value="@Model.ItemId" />
         <button type="submit" class="btn btn-success">Add to Basket</button>
     </form>
-
-    <a asp-controller="Market" asp-action="Index" class="btn btn-secondary mt-2">Back to Market</a>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 </div>
