@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<FightClub.Models.BasketItem>
+
+<h2>Your Basket</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td>@b.Item.Name</td>
+                <td>@b.Item.Price</td>
+                <td>@b.Quantity</td>
+                <td>@(b.Item.Price * b.Quantity)</td>
+            </tr>
+        }
+    </tbody>
+</table>
