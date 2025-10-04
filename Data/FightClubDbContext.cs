@@ -16,6 +16,8 @@ namespace FightClub.Data
         public DbSet<CharacterItem> CharacterItems { get; set; }
         public DbSet<MarketItem> MarketItems { get; set; }
         public DbSet<Battle> Battles { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,12 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FightClub.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FightClub.Controllers
 {
     public class PlayerController : Controller
     {
-        public IActionResult Index()
+        private readonly IPlayerRepository _playerRepository;
+        public PlayerController(IPlayerRepository playerRepository)
         {
-            return View();
+            _playerRepository = playerRepository;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var players = await _playerRepository.GetAllPlayersAsync();
+            return View(players);
         }
     }
 }
