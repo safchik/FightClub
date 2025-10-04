@@ -5,10 +5,10 @@ using FightClub.Extensions;
 
 namespace FightClub.Controllers
 {
-    public class BasketController1 : Controller
+    public class BasketController : Controller
     {
         private readonly FightClubDbContext _context;
-        public BasketController1(FightClubDbContext context)
+        public BasketController(FightClubDbContext context)
         {
             _context = context;
         }

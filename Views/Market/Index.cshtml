@@ -7,6 +7,20 @@
 <div class="container mt-4">
     <h2 class="mb-4">Market</h2>
 
+    <section class="jumbotron text-center">
+        <div class="container">
+            <p class="lead text-muted">
+                Browse and purchase items for your fighter — weapons, armor, and potions to prepare for the next battle!
+            </p>
+            <p>
+                <a asp-controller="Market" asp-action="Index" class="btn btn-outline-primary my-2">All Items</a>
+                <a asp-controller="Market" asp-action="Index" asp-route-category="Weapon" class="btn btn-outline-success my-2">Weapons</a>
+                <a asp-controller="Market" asp-action="Index" asp-route-category="Armor" class="btn btn-outline-warning my-2">Armor</a>
+                <a asp-controller="Market" asp-action="Index" asp-route-category="Potion" class="btn btn-outline-info my-2">Potions</a>
+            </p>
+        </div>
+    </section>
+
     <div class="row">
         @foreach (var item in Model)
         {
