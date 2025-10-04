@@ -1,4 +1,5 @@
 ﻿using FightClub.Data;
+using FightClub.Data.Enum;
 using FightClub.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +12,15 @@ namespace FightClub.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(ItemType? category)
         {
             List<Item> items = _context.Items.ToList();
+
+            if (category.HasValue)
+            {
+                items = items.Where(i => i.ItemType == category.Value).ToList();
+            }
+
             return View(items);
         }
 
