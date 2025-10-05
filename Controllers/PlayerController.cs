@@ -1,4 +1,6 @@
-﻿using FightClub.Interfaces;
+﻿using FightClub.Data;
+using FightClub.Interfaces;
+using FightClub.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FightClub.Controllers
@@ -12,7 +14,7 @@ namespace FightClub.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var players = await _playerRepository.GetAllPlayersAsync();
+            IEnumerable<Player> players = await _playerRepository.GetAllPlayersAsync();
             return View(players);
         }
     }

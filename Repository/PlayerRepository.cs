@@ -40,7 +40,8 @@ namespace FightClub.Repository
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
 
         public async Task UpdatePlayerAsync(Player player)
