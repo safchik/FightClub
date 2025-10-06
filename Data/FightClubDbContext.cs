@@ -1,22 +1,25 @@
 ﻿using FightClub.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FightClub.Data
 {
-    public class FightClubDbContext : DbContext
+    public class FightClubDbContext : IdentityDbContext<Player>
     {
         public FightClubDbContext(DbContextOptions<FightClubDbContext> options) : base(options)
         {
             
         }
 
-        public DbSet<Player> Players { get; set; }
+        
         public DbSet<Character> Characters { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<CharacterItem> CharacterItems { get; set; }
         public DbSet<MarketItem> MarketItems { get; set; }
         public DbSet<Battle> Battles { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
+        public DbSet<ItemRace> ItemRaces { get; set; }
+
 
 
 
@@ -45,6 +48,12 @@ namespace FightClub.Data
                 .WithMany()
                 .HasForeignKey(b => b.WinnerId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ItemRace>()
+                .HasOne(ir => ir.Item)
+                .WithMany(i => i.ItemRaces)
+                .HasForeignKey(ir => ir.ItemId);
+
 
             base.OnModelCreating(modelBuilder);
         }

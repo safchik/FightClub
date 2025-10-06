@@ -12,30 +12,30 @@ namespace FightClub.Repository
         {
             _context = context;
         }
-        public async  Task AddPlayerAsync(Player player)
+        public async Task AddPlayerAsync(Player player)
         {
-            await _context.Players.AddAsync(player);
+            await _context.Users.AddAsync(player);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeletePlayerAsync(int id)
         {
-            var player = await _context.Players.FindAsync(id);
+            var player = await _context.Users.FindAsync(id);
             if (player != null)
             {
-                _context.Players.Remove(player);
+                _context.Users.Remove(player);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<IEnumerable<Player>> GetAllPlayersAsync()
         {
-            return await _context.Players.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
-        public async Task<Player> GetPlayerByIdAsync(int id)
+        public async Task<Player> GetPlayerByIdAsync(string id)
         {
-            return await _context.Players.FindAsync(id);
+            return await _context.Users.FindAsync(id);
         }
 
         public bool Save()
@@ -46,7 +46,7 @@ namespace FightClub.Repository
 
         public async Task UpdatePlayerAsync(Player player)
         {
-            _context.Players.Update(player);
+            _context.Users.Update(player);
             await _context.SaveChangesAsync();
         }
     }

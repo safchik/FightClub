@@ -1,7 +1,9 @@
 using FightClub.Data;
 using FightClub.Interfaces;
+using FightClub.Models;
 using FightClub.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,16 @@ builder.Services.AddDbContext<FightClubDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// Identity
+builder.Services.AddDefaultIdentity<Player>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 12;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+})
+.AddEntityFrameworkStores<FightClubDbContext>();
 
 var app = builder.Build();
 

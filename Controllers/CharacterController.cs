@@ -17,5 +17,23 @@ namespace FightClub.Controllers
             IEnumerable<Character> characters = await _characterRepository.GetAllCharactersAsync();
             return View(characters);
         }
+
+        [HttpGet]
+        public IActionResult Create() 
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Character character)
+        {
+            if (!ModelState.IsValid) 
+            { 
+                return View(); 
+            }
+
+            await _characterRepository.AddAsync(character);
+            return RedirectToAction("Index", "Market");
+        }
     }
 }
