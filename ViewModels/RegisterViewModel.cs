@@ -23,5 +23,7 @@ namespace FightClub.ViewModels
         [Compare("Password", ErrorMessage = "Passwords do not match!")]
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
+
+        public bool RememberMe { get; set; }
     }
 }
