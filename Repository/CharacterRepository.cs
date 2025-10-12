@@ -36,9 +36,18 @@ namespace FightClub.Repository
         public async Task<Character> GetCharacterByIdAsync(int id)
         {
             return await _context.Characters
-                .Include(c => c.Player)
-                .FirstOrDefaultAsync(c => c.CharacterId == id);
+                                 .Include(c => c.Player)
+                                 .FirstOrDefaultAsync(c => c.CharacterId == id);
         }
+
+        public async Task<IEnumerable<Character>> GetCharactersByPlayerIdAsync(string playerId)
+        {
+            return await _context.Characters
+                                 .Where(c => c.PlayerId == playerId)
+                                 .Include(c => c.Player)
+                                 .ToListAsync();
+        }
+
 
         public bool Save()
         {

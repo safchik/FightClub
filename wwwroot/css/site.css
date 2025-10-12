@@ -60,21 +60,7 @@ body {
     padding: 0.6rem 1rem;
 }
 
-    /* underline hover animation */
-    .nav-link::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0%;
-        height: 2px;
-        background-color: #ff3333;
-        transition: width 0.3s ease;
-    }
-
-    .nav-link:hover::after {
-        width: 100%;
-    }
+    
 
     /* color + scale hover */
     .nav-link:hover {
@@ -160,4 +146,25 @@ body {
     .auth-container .btn-outline-secondary:hover {
         transform: scale(1.05);
     }
+
+input.input-validation-error {
+    border-color: red;
+    box-shadow: 0 0 5px red;
+}
+
+span.field-validation-error {
+    color: red;
+}
+
+
+.alert {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+
+    .alert.show {
+        opacity: 1;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
 

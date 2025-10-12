@@ -1,24 +1,36 @@
 ﻿@model FightClub.Models.Character
 @using FightClub.Data.Enum
 
-<h2>Create Your Character</h2>
+@{
+    ViewData["Title"] = "Create Your Character";
+}
+
+<h2 class="mb-4">Create Your Character</h2>
 
 <form asp-action="Create" method="post">
-    <div class="form-group">
-        <label>Name</label>
+    @Html.AntiForgeryToken()
+
+    <div class="form-group mb-3">
+        <label asp-for="Name" class="form-label"></label>
         <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label>Gender</label>
-        <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()"></select>
+    <div class="form-group mb-3">
+        <label asp-for="Gender" class="form-label"></label>
+        <select asp-for="Gender" class="form-control" asp-items="ViewBag.Genders"></select>
+        <span asp-validation-for="Gender" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label>Race</label>
-        <select asp-for="Race" class="form-control" asp-items="Html.GetEnumSelectList<Race>()"></select>
+    <div class="form-group mb-3">
+        <label asp-for="Race" class="form-label"></label>
+        <select asp-for="Race" class="form-control" asp-items="ViewBag.Races"></select>
+        <span asp-validation-for="Race" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-success">Create Character</button>
 </form>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

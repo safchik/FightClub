@@ -1,14 +1,12 @@
 ﻿using FightClub.Models;
 
-namespace FightClub.Interfaces
+public interface ICharacterRepository
 {
-    public interface ICharacterRepository
-    {
-        Task<IEnumerable<Character>> GetAllCharactersAsync();
-        Task<Character> GetCharacterByIdAsync(int id);
-        Task AddAsync(Character character);
-        Task UpdateAsync(Character character);
-        Task DeleteAsync(int id);
-        bool Save();
-    }
+    Task<IEnumerable<Character>> GetAllCharactersAsync();
+    Task<Character> GetCharacterByIdAsync(int id); // single character
+    Task<IEnumerable<Character>> GetCharactersByPlayerIdAsync(string playerId); // new
+    Task AddAsync(Character character);
+    Task UpdateAsync(Character character);
+    Task DeleteAsync(int id);
+    bool Save();
 }
