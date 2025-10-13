@@ -4,6 +4,7 @@ using FightClub.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FightClub.Migrations
 {
     [DbContext(typeof(FightClubDbContext))]
-    partial class FightClubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251013151047_AddRaceStatsTable")]
+    partial class AddRaceStatsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,9 +110,6 @@ namespace FightClub.Migrations
                     b.Property<int>("CurrentHP")
                         .HasColumnType("int");
 
-                    b.Property<int>("CurrentMana")
-                        .HasColumnType("int");
-
                     b.Property<int>("Defense")
                         .HasColumnType("int");
 
@@ -123,9 +123,6 @@ namespace FightClub.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Mana")
                         .HasColumnType("int");
 
                     b.Property<int>("MaxHP")
@@ -371,7 +368,7 @@ namespace FightClub.Migrations
                             Id = 1,
                             Attack = 5,
                             Defense = 5,
-                            Mana = 100,
+                            Mana = 0,
                             MaxHP = 100,
                             Race = 1
                         },
@@ -380,7 +377,7 @@ namespace FightClub.Migrations
                             Id = 2,
                             Attack = 7,
                             Defense = 3,
-                            Mana = 100,
+                            Mana = 0,
                             MaxHP = 120,
                             Race = 2
                         },
@@ -389,7 +386,7 @@ namespace FightClub.Migrations
                             Id = 3,
                             Attack = 6,
                             Defense = 2,
-                            Mana = 100,
+                            Mana = 0,
                             MaxHP = 110,
                             Race = 3
                         },
@@ -398,7 +395,7 @@ namespace FightClub.Migrations
                             Id = 4,
                             Attack = 4,
                             Defense = 6,
-                            Mana = 100,
+                            Mana = 0,
                             MaxHP = 110,
                             Race = 4
                         },
@@ -407,7 +404,7 @@ namespace FightClub.Migrations
                             Id = 5,
                             Attack = 5,
                             Defense = 2,
-                            Mana = 100,
+                            Mana = 0,
                             MaxHP = 100,
                             Race = 5
                         },
@@ -416,7 +413,7 @@ namespace FightClub.Migrations
                             Id = 6,
                             Attack = 4,
                             Defense = 6,
-                            Mana = 100,
+                            Mana = 0,
                             MaxHP = 120,
                             Race = 6
                         });

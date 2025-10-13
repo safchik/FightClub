@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using FightClub.Data.Enum;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace FightClub.Controllers
 {
@@ -56,8 +57,37 @@ namespace FightClub.Controllers
                 return View(character);
             }
 
+            // Get logged-in user ID
             character.PlayerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             character.CreatedAt = DateTime.UtcNow;
+            character.Level = 1;
+            character.Experience = 0;
+            character.Gold = 0;
+
+            // Get the race stats for this character's race
+            var raceStats = await _characterRepository.GetRaceStatsByRaceAsync(character.Race);
+            if (raceStats != null)
+            {
+                character.MaxHP = raceStats.MaxHP;
+                character.CurrentHP = raceStats.MaxHP;
+                character.Attack = raceStats.Attack;
+                character.Defense = raceStats.Defense;
+                character.Mana = raceStats.Mana;
+                character.CurrentMana = raceStats.Mana;
+                character.Gold = 0;
+                character.CreatedAt = DateTime.UtcNow;
+            }
+            else
+            {
+                // fallback if somehow raceStats not found
+                character.MaxHP = 100;
+                character.CurrentHP = 100;
+                character.Attack = 5;
+                character.Defense = 3;
+                character.Mana = 100;
+                character.Gold = 0;
+                character.CreatedAt = DateTime.UtcNow;
+            }
 
             // The character.PlayerId is already set from the GET action (logged-in user)
             await _characterRepository.AddAsync(character);
