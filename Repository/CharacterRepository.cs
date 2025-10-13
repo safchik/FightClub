@@ -1,4 +1,5 @@
 ﻿using FightClub.Data;
+using FightClub.Data.Enum;
 using FightClub.Interfaces;
 using FightClub.Models;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,12 @@ namespace FightClub.Repository
                                  .Include(c => c.Player)
                                  .ToListAsync();
         }
+
+        public async Task<RaceStats?> GetRaceStatsByRaceAsync(Race race)
+        {
+            return await _context.RaceStats.FirstOrDefaultAsync(r => r.Race == race);
+        }
+
 
 
         public bool Save()

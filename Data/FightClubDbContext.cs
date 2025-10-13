@@ -1,4 +1,5 @@
-﻿using FightClub.Models;
+﻿using FightClub.Data.Enum;
+using FightClub.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,7 @@ namespace FightClub.Data
         public DbSet<Battle> Battles { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
         public DbSet<ItemRace> ItemRaces { get; set; }
+        public DbSet<RaceStats> RaceStats { get; set; }
 
 
 
@@ -53,6 +55,17 @@ namespace FightClub.Data
                 .HasOne(ir => ir.Item)
                 .WithMany(i => i.ItemRaces)
                 .HasForeignKey(ir => ir.ItemId);
+
+            modelBuilder.Entity<RaceStats>()
+                .HasData(
+                    new RaceStats { Id = 1, Race = Race.Human, MaxHP = 100, Attack = 5, Defense = 5, Mana=100 },
+                    new RaceStats { Id = 2, Race = Race.Elf, MaxHP = 120, Attack = 7, Defense = 3, Mana = 100 },
+                    new RaceStats { Id = 3, Race = Race.Orc, MaxHP = 110, Attack = 6, Defense = 2, Mana = 100 },
+                    new RaceStats { Id = 4, Race = Race.Dwarf, MaxHP = 110, Attack = 4, Defense = 6, Mana = 100 },
+                    new RaceStats { Id = 5, Race = Race.Undead, MaxHP = 100, Attack = 5, Defense = 2 , Mana = 100 },
+                    new RaceStats { Id = 6, Race = Race.Demon, MaxHP = 120, Attack = 4, Defense = 6 , Mana = 100 }
+                );
+
 
 
             base.OnModelCreating(modelBuilder);

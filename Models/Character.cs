@@ -14,6 +14,8 @@ namespace FightClub.Models
         public int CurrentHP { get; set; } = 100;
         public int Attack { get; set; } = 5;
         public int Defense { get; set; } = 3;
+        public int Mana { get; set; } = 100;      
+        public int CurrentMana { get; set; } = 100;
         public int Gold { get; set; } = 0;
         public DateTime CreatedAt { get; set; }
 

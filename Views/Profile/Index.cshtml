@@ -32,7 +32,10 @@
                         <div id="collapse-@character.CharacterId" class="accordion-collapse collapse">
                             <div class="accordion-body">
                                 <p><strong>Race:</strong> @character.Race</p>
+                                <p><strong>Attack:</strong> @character.Attack</p>
+                                <p><strong>Defense:</strong> @character.Defense</p>
                                 <p><strong>HP:</strong> @character.CurrentHP</p>
+                                <p><strong>Mana:</strong> @character.CurrentMana</p>
                                 <p><strong>Gold:</strong> @character.Gold</p>
                                 <p><strong></strong></p>
                                 <a asp-controller="Character" asp-action="Details" asp-route-id="@character.CharacterId" class="btn btn-sm btn-outline-primary">View</a>
