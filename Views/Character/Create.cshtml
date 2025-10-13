@@ -8,44 +8,50 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4">Create Your Character</h2>
 
-    <form asp-action="Create" method="post" id="characterForm">
+    <form asp-action="Create" asp-controller="Character" method="post" id="characterForm">
         @Html.AntiForgeryToken()
+
         <div class="card shadow-sm p-4">
+
+            <!-- Character Name -->
             <div class="form-group mb-4">
                 <label for="Name" class="form-label">Character Name</label>
-                <input asp-for="Name" class="form-control" placeholder="Enter your hero's name" required />
+                <input asp-for="Name" class="form-control" id="Name" placeholder="Enter your hero's name" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <!-- Race Selection -->
             <div class="mb-4">
-                <label class="form-label d-block">Choose Your Race</label>
+                <label class="form-label d-block mb-2">Choose Your Race</label>
                 <div class="race-scroll d-flex gap-3 overflow-auto pb-2">
                     @foreach (var race in Enum.GetValues(typeof(Race)))
                     {
-                        <div class="race-card text-center p-3 border rounded"
-                             data-race="@race">
+                        var raceId = $"race_{race}";
+                        <input type="radio" id="@raceId" name="Race" value="@race" class="d-none race-input" />
+                        <label for="@raceId" class="race-card text-center p-3 border rounded">
                             <div class="race-placeholder mb-2"></div>
                             <span>@race</span>
-                        </div>
+                        </label>
                     }
                 </div>
-                <input type="hidden" asp-for="Race" id="SelectedRace" />
+                <span asp-validation-for="Race" class="text-danger"></span>
             </div>
 
             <!-- Gender Selection -->
             <div class="mb-4">
-                <label class="form-label d-block">Choose Gender</label>
+                <label class="form-label d-block mb-2">Choose Gender</label>
                 <div class="d-flex gap-3" id="genderOptions">
-                    <div class="gender-card border rounded p-3 text-center flex-fill" data-gender="Male">
-                        <div class="gender-placeholder mb-2"></div>
-                        <span>Male</span>
-                    </div>
-                    <div class="gender-card border rounded p-3 text-center flex-fill" data-gender="Female">
-                        <div class="gender-placeholder mb-2"></div>
-                        <span>Female</span>
-                    </div>
+                    @foreach (var gender in Enum.GetValues(typeof(Gender)))
+                    {
+                        var genderId = $"gender_{gender}";
+                        <input type="radio" id="@genderId" name="Gender" value="@gender" class="d-none gender-input" />
+                        <label for="@genderId" class="gender-card border rounded p-3 text-center flex-fill">
+                            <div class="gender-placeholder mb-2"></div>
+                            <span>@gender</span>
+                        </label>
+                    }
                 </div>
-                <input type="hidden" asp-for="Gender" id="SelectedGender" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
 
             <div class="text-center">
@@ -56,49 +62,43 @@
 </div>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
     <script>
-        const raceCards = document.querySelectorAll(".race-card");
-        const genderCards = document.querySelectorAll(".gender-card");
-        const selectedRaceInput = document.getElementById("SelectedRace");
-        const selectedGenderInput = document.getElementById("SelectedGender");
+        const nameInput = document.getElementById("Name");
+        const raceInputs = document.querySelectorAll(".race-input");
+        const genderInputs = document.querySelectorAll(".gender-input");
         const createBtn = document.getElementById("createBtn");
 
-        let selectedRace = null;
-        let selectedGender = null;
-
-        raceCards.forEach(card => {
+        // Add selection styles when radio changes
+        document.querySelectorAll(".race-card, .gender-card").forEach(card => {
             card.addEventListener("click", () => {
-                raceCards.forEach(c => c.classList.remove("selected"));
+                const group = card.htmlFor.startsWith("race") ? ".race-card" : ".gender-card";
+                document.querySelectorAll(group).forEach(c => c.classList.remove("selected"));
                 card.classList.add("selected");
-                selectedRace = card.dataset.race;
-                selectedRaceInput.value = selectedRace;
                 checkForm();
             });
         });
 
-        genderCards.forEach(card => {
-            card.addEventListener("click", () => {
-                genderCards.forEach(c => c.classList.remove("selected"));
-                card.classList.add("selected");
-                selectedGender = card.dataset.gender;
-                selectedGenderInput.value = selectedGender;
-                checkForm();
-            });
-        });
+        nameInput.addEventListener("input", checkForm);
+        raceInputs.forEach(input => input.addEventListener("change", checkForm));
+        genderInputs.forEach(input => input.addEventListener("change", checkForm));
 
         function checkForm() {
-            createBtn.disabled = !(selectedRace && selectedGender && document.querySelector("input[name='Name']").value.trim());
+            const nameFilled = nameInput.value.trim().length > 0;
+            const raceSelected = document.querySelector(".race-input:checked");
+            const genderSelected = document.querySelector(".gender-input:checked");
+            createBtn.disabled = !(nameFilled && raceSelected && genderSelected);
         }
-
-        document.querySelector("input[name='Name']").addEventListener("input", checkForm);
     </script>
 
     <style>
         .race-scroll::-webkit-scrollbar {
             height: 6px;
         }
+
         .race-scroll::-webkit-scrollbar-thumb {
-            background-color: #aaa;
+            background-color: #888;
             border-radius: 3px;
         }
 
@@ -107,12 +107,13 @@
             transition: all 0.2s ease-in-out;
             background: #1e1e1e;
             color: #fff;
+            min-width: 120px;
         }
 
-        .race-card:hover, .gender-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-        }
+            .race-card:hover, .gender-card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+            }
 
         .selected {
             border: 2px solid #28a745 !important;
