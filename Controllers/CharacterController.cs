@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using FightClub.Data.Enum;
+using System.Security.Claims;
 
 namespace FightClub.Controllers
 {
@@ -47,6 +48,7 @@ namespace FightClub.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Character character)
         {
             if (!ModelState.IsValid)
@@ -54,10 +56,13 @@ namespace FightClub.Controllers
                 return View(character);
             }
 
+            character.PlayerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            character.CreatedAt = DateTime.UtcNow;
+
             // The character.PlayerId is already set from the GET action (logged-in user)
             await _characterRepository.AddAsync(character);
 
-            return RedirectToAction("Index", "Market");
+            return RedirectToAction("Index", "Profile");
         }
 
     }
