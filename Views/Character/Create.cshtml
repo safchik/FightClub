@@ -5,32 +5,126 @@
     ViewData["Title"] = "Create Your Character";
 }
 
-<h2 class="mb-4">Create Your Character</h2>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Create Your Character</h2>
 
-<form asp-action="Create" method="post">
-    @Html.AntiForgeryToken()
+    <form asp-action="Create" method="post" id="characterForm">
+        @Html.AntiForgeryToken()
+        <div class="card shadow-sm p-4">
+            <div class="form-group mb-4">
+                <label for="Name" class="form-label">Character Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Enter your hero's name" required />
+            </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
+            <!-- Race Selection -->
+            <div class="mb-4">
+                <label class="form-label d-block">Choose Your Race</label>
+                <div class="race-scroll d-flex gap-3 overflow-auto pb-2">
+                    @foreach (var race in Enum.GetValues(typeof(Race)))
+                    {
+                        <div class="race-card text-center p-3 border rounded"
+                             data-race="@race">
+                            <div class="race-placeholder mb-2"></div>
+                            <span>@race</span>
+                        </div>
+                    }
+                </div>
+                <input type="hidden" asp-for="Race" id="SelectedRace" />
+            </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Gender" class="form-label"></label>
-        <select asp-for="Gender" class="form-control" asp-items="ViewBag.Genders"></select>
-        <span asp-validation-for="Gender" class="text-danger"></span>
-    </div>
+            <!-- Gender Selection -->
+            <div class="mb-4">
+                <label class="form-label d-block">Choose Gender</label>
+                <div class="d-flex gap-3" id="genderOptions">
+                    <div class="gender-card border rounded p-3 text-center flex-fill" data-gender="Male">
+                        <div class="gender-placeholder mb-2"></div>
+                        <span>Male</span>
+                    </div>
+                    <div class="gender-card border rounded p-3 text-center flex-fill" data-gender="Female">
+                        <div class="gender-placeholder mb-2"></div>
+                        <span>Female</span>
+                    </div>
+                </div>
+                <input type="hidden" asp-for="Gender" id="SelectedGender" />
+            </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Race" class="form-label"></label>
-        <select asp-for="Race" class="form-control" asp-items="ViewBag.Races"></select>
-        <span asp-validation-for="Race" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-success">Create Character</button>
-</form>
+            <div class="text-center">
+                <button type="submit" class="btn btn-success px-5" id="createBtn" disabled>Create Character</button>
+            </div>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const raceCards = document.querySelectorAll(".race-card");
+        const genderCards = document.querySelectorAll(".gender-card");
+        const selectedRaceInput = document.getElementById("SelectedRace");
+        const selectedGenderInput = document.getElementById("SelectedGender");
+        const createBtn = document.getElementById("createBtn");
+
+        let selectedRace = null;
+        let selectedGender = null;
+
+        raceCards.forEach(card => {
+            card.addEventListener("click", () => {
+                raceCards.forEach(c => c.classList.remove("selected"));
+                card.classList.add("selected");
+                selectedRace = card.dataset.race;
+                selectedRaceInput.value = selectedRace;
+                checkForm();
+            });
+        });
+
+        genderCards.forEach(card => {
+            card.addEventListener("click", () => {
+                genderCards.forEach(c => c.classList.remove("selected"));
+                card.classList.add("selected");
+                selectedGender = card.dataset.gender;
+                selectedGenderInput.value = selectedGender;
+                checkForm();
+            });
+        });
+
+        function checkForm() {
+            createBtn.disabled = !(selectedRace && selectedGender && document.querySelector("input[name='Name']").value.trim());
+        }
+
+        document.querySelector("input[name='Name']").addEventListener("input", checkForm);
+    </script>
+
+    <style>
+        .race-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        .race-scroll::-webkit-scrollbar-thumb {
+            background-color: #aaa;
+            border-radius: 3px;
+        }
+
+        .race-card, .gender-card {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            background: #1e1e1e;
+            color: #fff;
+        }
+
+        .race-card:hover, .gender-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .selected {
+            border: 2px solid #28a745 !important;
+            box-shadow: 0 0 20px rgba(40, 167, 69, 0.6);
+        }
+
+        .race-placeholder, .gender-placeholder {
+            width: 80px;
+            height: 80px;
+            margin: auto;
+            background: linear-gradient(135deg, #444, #222);
+            border-radius: 10px;
+        }
+    </style>
 }

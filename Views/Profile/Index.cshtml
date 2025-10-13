@@ -1,0 +1,54 @@
+﻿@model IEnumerable<FightClub.Models.Character>
+
+@{
+    var player = ViewBag.Player as FightClub.Models.Player;
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Welcome, @player?.Name</h2>
+
+    <div class="card mb-4 shadow-sm p-3">
+        <h5 class="card-title">Player Info</h5>
+        <p><strong>Email:</strong> @player?.Email</p>
+        <p><strong>Joined:</strong> @player?.CreatedAt.ToString("dd MMM yyyy")</p>
+    </div>
+
+    <div class="card shadow-sm p-3">
+        <h5 class="card-title mb-3">Your Characters</h5>
+
+        @if (Model.Any())
+        {
+            <div class="accordion" id="characterAccordion">
+                @foreach (var character in Model)
+                {
+                    <div class="accordion-item mb-2">
+                        <h2 class="accordion-header" id="heading=@character.CharacterId">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@character.CharacterId">
+                                @character.Name (Lv. @character.Level)
+                            </button>
+                        </h2>
+
+                        <div id="collapse-@character.CharacterId" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <p><strong>Race:</strong> @character.Race</p>
+                                <p><strong>HP:</strong> @character.CurrentHP</p>
+                                <p><strong>Gold:</strong> @character.Gold</p>
+                                <p><strong></strong></p>
+                                <a asp-controller="Character" asp-action="Details" asp-route-id="@character.CharacterId" class="btn btn-sm btn-outline-primary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else 
+        {
+            <div class="text-center text-muted mb-3">No characters yet.</div>
+        }
+
+        <div class="text-center text-muted mt-3">
+            <a asp-controller="Character" asp-action="Create" class="btn btn-success">Create New Character</a>
+        </div>
+    </div>
+</div>
