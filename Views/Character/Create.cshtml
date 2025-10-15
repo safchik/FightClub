@@ -27,7 +27,7 @@
                     @foreach (var race in Enum.GetValues(typeof(Race)))
                     {
                         var raceId = $"race_{race}";
-                        <input type="radio" id="@raceId" name="Race" value="@race" class="d-none race-input" />
+                        <input type="radio" id="@raceId" name="Race" value="@((int)race)" class="d-none race-input" />
                         <label for="@raceId" class="race-card text-center p-3 border rounded">
                             <div class="race-placeholder mb-2"></div>
                             <span>@race</span>
@@ -44,7 +44,7 @@
                     @foreach (var gender in Enum.GetValues(typeof(Gender)))
                     {
                         var genderId = $"gender_{gender}";
-                        <input type="radio" id="@genderId" name="Gender" value="@gender" class="d-none gender-input" />
+                        <input type="radio" id="@genderId" name="Gender" value="@((int)gender)" class="d-none gender-input" />
                         <label for="@genderId" class="gender-card border rounded p-3 text-center flex-fill">
                             <div class="gender-placeholder mb-2"></div>
                             <span>@gender</span>
@@ -54,11 +54,13 @@
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
 
+
             <div class="text-center">
                 <button type="submit" class="btn btn-success px-5" id="createBtn" disabled>Create Character</button>
             </div>
         </div>
     </form>
+
 </div>
 
 @section Scripts {
@@ -73,12 +75,17 @@
         // Add selection styles when radio changes
         document.querySelectorAll(".race-card, .gender-card").forEach(card => {
             card.addEventListener("click", () => {
+                const input = document.getElementById(card.htmlFor);
+                if (input) input.checked = true; // manually check input
+
                 const group = card.htmlFor.startsWith("race") ? ".race-card" : ".gender-card";
+
                 document.querySelectorAll(group).forEach(c => c.classList.remove("selected"));
                 card.classList.add("selected");
                 checkForm();
             });
         });
+
 
         nameInput.addEventListener("input", checkForm);
         raceInputs.forEach(input => input.addEventListener("change", checkForm));
