@@ -167,4 +167,10 @@ span.field-validation-error {
         box-shadow: 0 0 15px rgba(0,0,0,0.2);
     }
 
+/* Disable card hover animation when modal is active */
+body.modal-open .card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    z-index: auto !important;
+}
 

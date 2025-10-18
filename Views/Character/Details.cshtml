@@ -1,0 +1,13 @@
+﻿@model FightClub.Models.Character
+
+<div class="container mt-4">
+    <h2>@Model.Name (Lv. @Model.Level)</h2>
+    <hr />
+    <p><strong>Race:</strong> @Model.Race</p>
+    <p><strong>Gender:</strong> @Model.Gender</p>
+    <p><strong>Attack:</strong> @Model.Attack</p>
+    <p><strong>Defense:</strong> @Model.Defense</p>
+    <p><strong>HP:</strong> @Model.CurrentHP / @Model.MaxHP</p>
+    <p><strong>Mana:</strong> @Model.CurrentMana / @Model.Mana</p>
+    <p><strong>Gold:</strong> @Model.Gold</p>
+</div>

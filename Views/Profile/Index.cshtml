@@ -8,50 +8,121 @@
 <div class="container mt-4">
     <h2 class="text-center mb-4">Welcome, @player?.Name</h2>
 
+    <!-- PLAYER INFO CARD -->
     <div class="card mb-4 shadow-sm p-3">
         <h5 class="card-title">Player Info</h5>
         <p><strong>Email:</strong> @player?.Email</p>
         <p><strong>Joined:</strong> @player?.CreatedAt.ToString("dd MMM yyyy")</p>
     </div>
 
+    <!-- CHARACTERS SECTION -->
     <div class="card shadow-sm p-3">
         <h5 class="card-title mb-3">Your Characters</h5>
 
         @if (Model.Any())
         {
-            <div class="accordion" id="characterAccordion">
+            <div class="row g-4">
                 @foreach (var character in Model)
                 {
-                    <div class="accordion-item mb-2">
-                        <h2 class="accordion-header" id="heading=@character.CharacterId">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@character.CharacterId">
-                                @character.Name (Lv. @character.Level)
-                            </button>
-                        </h2>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card text-center border-0 shadow-sm h-100 character-card">
+                            <!-- Character Portrait -->
+                            <div class="card-img-top bg-dark text-light d-flex align-items-center justify-content-center"
+                                 style="height: 150px; border-radius: 10px;">
+                                <span>@character.Race</span>
+                            </div>
 
-                        <div id="collapse-@character.CharacterId" class="accordion-collapse collapse">
-                            <div class="accordion-body">
-                                <p><strong>Race:</strong> @character.Race</p>
-                                <p><strong>Attack:</strong> @character.Attack</p>
-                                <p><strong>Defense:</strong> @character.Defense</p>
-                                <p><strong>HP:</strong> @character.CurrentHP</p>
-                                <p><strong>Mana:</strong> @character.CurrentMana</p>
-                                <p><strong>Gold:</strong> @character.Gold</p>
-                                <p><strong></strong></p>
-                                <a asp-controller="Character" asp-action="Details" asp-route-id="@character.CharacterId" class="btn btn-sm btn-outline-primary">View</a>
+                            <div class="card-body">
+                                <h5 class="card-title mb-1">@character.Name</h5>
+                                <p class="text-muted small mb-2">Level @character.Level</p>
+                                <button class="btn btn-outline-primary btn-sm view-btn"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#characterModal-@character.CharacterId">
+                                    View
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CHARACTER DETAILS MODAL -->
+                    <div class="modal fade" id="characterModal-@character.CharacterId" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content shadow-lg">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">@character.Name (Lv. @character.Level)</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div class="text-center mb-3">
+                                        <div class="bg-dark text-light d-inline-flex align-items-center justify-content-center"
+                                             style="width: 120px; height: 120px; border-radius: 50%;">
+                                            <span>@character.Race</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-start">
+                                        <p><strong>Race:</strong> @character.Race</p>
+                                        <p><strong>Gender:</strong> @character.Gender</p>
+                                        <p><strong>Attack:</strong> @character.Attack</p>
+                                        <p><strong>Defense:</strong> @character.Defense</p>
+                                        <p><strong>HP:</strong> @character.CurrentHP / @character.MaxHP</p>
+                                        <p><strong>Mana:</strong> @character.CurrentMana / @character.Mana</p>
+                                        <p><strong>Gold:</strong> @character.Gold</p>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer d-flex justify-content-between">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                                    <a asp-controller="Character"
+                                       asp-action="Details"
+                                       asp-route-id="@character.CharacterId"
+                                       class="btn btn-success">
+                                        Choose
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 }
             </div>
         }
-        else 
+        else
         {
             <div class="text-center text-muted mb-3">No characters yet.</div>
         }
 
-        <div class="text-center text-muted mt-3">
-            <a asp-controller="Character" asp-action="Create" class="btn btn-success">Create New Character</a>
+        <div class="text-center mt-4">
+            <a asp-controller="Character" asp-action="Create" class="btn btn-success">
+                Create New Character
+            </a>
         </div>
     </div>
 </div>
+
+<style>
+    .character-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+        /* Smooth hover animation only when not interacting with a modal */
+        .character-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+        }
+
+    /* Disable hover scaling when modal is open */
+    body.modal-open .character-card:hover {
+        transform: none !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-backdrop.show {
+        opacity: 0.5;
+    }
+
+    .modal-content {
+        transition: none !important;
+    }
+</style>
