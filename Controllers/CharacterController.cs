@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace FightClub.Controllers
 {
@@ -12,10 +13,12 @@ namespace FightClub.Controllers
     public class CharacterController : Controller
     {
         private readonly ICharacterRepository _characterRepository;
+        private readonly UserManager<Player> _userManager;
 
-        public CharacterController(ICharacterRepository characterRepository)
+        public CharacterController(ICharacterRepository characterRepository, UserManager<Player> userManager)
         {
             _characterRepository = characterRepository;
+            _userManager = userManager;
         }
 
         // -------------------------
@@ -128,6 +131,50 @@ namespace FightClub.Controllers
 
             Console.WriteLine($" Character '{character.Name}' created for player {character.PlayerId}");
             return RedirectToAction("Index", "Profile");
+        }
+
+        // -------------------------
+        // CHOOSE CHARACTER (POST)
+        // -------------------------
+        [HttpPost]
+        public async Task<IActionResult> Choose(int id)
+        {
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            Player? player = await _userManager.FindByIdAsync(userId);
+            if (player == null)
+            {
+                return NotFound("Player not found.");
+            }
+
+            Character? character = await _characterRepository.GetCharacterByIdAsync(id);
+            if (character == null || character.PlayerId != userId)
+            {
+                return BadRequest("Invalid character selection.");
+            }
+
+            // Assign chosen charactefr as active
+            player.ActiveCharacterId = id;
+            await _userManager.UpdateAsync(player);
+
+            return RedirectToAction("Details", new { id });
+        }
+
+        // -------------------------
+        // CHARACTER DETAILS VIEW
+        // -------------------------
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            Character? character = await _characterRepository.GetCharacterByIdAsync(id);
+            if (character == null)
+                return NotFound();
+
+            return View(character);
         }
     }
 }

@@ -32,6 +32,20 @@ namespace FightClub.Data
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
+            // PLAYER CHARACTERS (1-to-many)
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.Player)
+                .WithMany(p => p.Characters)
+                .HasForeignKey(c => c.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // PLAYER ACTIVE CHARACTER (1-to-1) 
+            modelBuilder.Entity<Player>()
+                .HasOne(p => p.ActiveCharacter)
+                .WithMany()
+                .HasForeignKey(p => p.ActiveCharacterId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Battle relationships
             modelBuilder.Entity<Battle>()
                 .HasOne(b => b.Attacker)
