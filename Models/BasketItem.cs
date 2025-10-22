@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FightClub.Models
 {
@@ -8,11 +9,13 @@ namespace FightClub.Models
         public int BasketItemId { get; set; }
 
         public int ItemId { get; set; }
+        [ForeignKey("ItemId")]
         public Item Item { get; set; }
 
         public int Quantity { get; set; } = 1;
 
-        public int CharacterId { get; set; } // or character id if you tie basket to a character
-        public Player Player { get; set; }
+        public int CharacterId { get; set; }
+        [ForeignKey("CharacterId")]
+        public Character Character { get; set; }
     }
 }
