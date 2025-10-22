@@ -37,7 +37,7 @@ namespace FightClub.Repository
             _context.BasketItems.RemoveRange(basketItems);
         }
 
-        public async Task<IEnumerable<BasketItem>> GetBasketItemByCharacterAsync(int characterId)
+        public async Task<IEnumerable<BasketItem>> GetBasketItemByCharacterIdAsync(int characterId)
         {
             return await _context.BasketItems
                 .Include(b => b.Item)

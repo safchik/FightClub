@@ -1,30 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<FightClub.Models.BasketItem>
+
 @{
+    ViewData["Title"] = "Basket";
 }
-@model IEnumerable<FightClub.Models.BasketItem>
 
-<h2>Your Basket</h2>
+<div class="container mt-4">
+    <h2 class="mb-3">Your Basket</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Item</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var b in Model)
-        {
-            <tr>
-                <td>@b.Item.Name</td>
-                <td>@b.Item.Price</td>
-                <td>@b.Quantity</td>
-                <td>@(b.Item.Price * b.Quantity)</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    @if (!Model.Any())
+    {
+        <p class="text-muted">Your Basket is empty.</p>
+    } 
+    else
+    {
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <form asp-controller="Basket" asp-action="Remove" method="post">
+                            <input type="hidden" name="basketItemId" value="@item.BasketItemId" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+                        </form>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+        <div class="text-end">
+            <form asp-controller="Basket" asp-action="Checkout" method="post">
+                <button type="submit" class="btn btn-success">Checkout</button>
+            </form>
+        </div>
+    }
+</div>

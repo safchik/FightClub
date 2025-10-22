@@ -68,6 +68,14 @@ namespace FightClub.Repository
                 .FirstOrDefaultAsync(r => r.Race == race);
         }
 
+        // Add item to character
+        public async Task AddCharacterItemAsync(CharacterItem characterItem)
+        {
+            await _context.CharacterItems.AddAsync(characterItem);
+            await _context.SaveChangesAsync();
+        }
+
+
         // Update character
         public async Task UpdateAsync(Character character)
         {
