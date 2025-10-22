@@ -1,4 +1,5 @@
 using FightClub.Data;
+using FightClub.Helpers;
 using FightClub.Interfaces;
 using FightClub.Models;
 using FightClub.Repository;
@@ -14,6 +15,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+
+// Helpers
+builder.Services.AddScoped<PlayerContextService, PlayerContextService>();
 
 // DbContext
 builder.Services.AddDbContext<FightClubDbContext>(options =>
