@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FightClub.Controllers
 {
@@ -142,10 +143,10 @@ namespace FightClub.Controllers
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
-                return Unauthorized();
+                return RedirectToAction("Login", "Account");
             }
 
-            Player? player = await _userManager.FindByIdAsync(userId);
+            Player? player = await _userManager.Users.FirstOrDefaultAsync(p => p.Id == userId);
             if (player == null)
             {
                 return NotFound("Player not found.");
@@ -154,14 +155,14 @@ namespace FightClub.Controllers
             Character? character = await _characterRepository.GetCharacterByIdAsync(id);
             if (character == null || character.PlayerId != userId)
             {
-                return BadRequest("Invalid character selection.");
+                return Unauthorized("Invalid character selection.");
             }
 
             // Assign chosen charactefr as active
             player.ActiveCharacterId = id;
             await _userManager.UpdateAsync(player);
 
-            return RedirectToAction("Details", new { id });
+            return RedirectToAction("Details", "Character", new { id });
         }
 
         // -------------------------

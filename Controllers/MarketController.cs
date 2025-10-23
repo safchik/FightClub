@@ -1,5 +1,7 @@
 ﻿using FightClub.Data;
 using FightClub.Data.Enum;
+using FightClub.Helpers;
+using FightClub.Interfaces;
 using FightClub.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +10,13 @@ namespace FightClub.Controllers
     public class MarketController : Controller
     {
         private readonly FightClubDbContext _context;
-        public MarketController(FightClubDbContext context)
+        private readonly IMarketRepository _marketRepository;
+        private readonly PlayerContextService _playerContextService;
+        public MarketController(FightClubDbContext context, IMarketRepository marketRepository, PlayerContextService playerContextService)
         {
             _context = context;
+            _marketRepository = marketRepository;
+            _playerContextService = playerContextService;
         }
         public IActionResult Index(ItemType? category)
         {

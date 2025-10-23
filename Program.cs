@@ -16,6 +16,7 @@ builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddScoped<IMarketRepository, MarketRepository>();
 
 // Helpers
 builder.Services.AddScoped<PlayerContextService, PlayerContextService>();
