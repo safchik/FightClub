@@ -2,10 +2,22 @@
 
 @{
     ViewData["Title"] = "Market";
+    var gold = ViewBag.Gold ?? 0;
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger text-center">@TempData["Error"]</div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success text-center">@TempData["Success"]</div>
 }
 
 <div class="container mt-4">
-    <h2 class="mb-4">Market</h2>
+    <h2 class="text-center mb-4">🛒 Market</h2>
+    <p class="text-center">Your gold: <strong>@gold</strong></p>
 
     <section class="jumbotron text-center">
         <div class="container">
