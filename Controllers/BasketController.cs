@@ -37,17 +37,22 @@ namespace FightClub.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(int itemId)
+        public async Task<IActionResult> AddToBasket(int itemId)
         {
             var activeCharacter = await _playerContextService.GetActiveCharacterAsync(User);
             if (activeCharacter == null)
+            {
+                TempData["Error"] = "You must choose a character first.";
                 return RedirectToAction("Index", "Profile");
+            }
 
             await _basketRepository.AddToBasketAsync(activeCharacter.CharacterId, itemId);
             await _basketRepository.SaveAsync();
 
-            return RedirectToAction("Index", "Market");
+            TempData["Success"] = "Item added to your basket!";
+            return RedirectToAction("Index", "Basket");
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Remove(int basketItemId)

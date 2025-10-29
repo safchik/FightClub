@@ -14,7 +14,7 @@
     <p><strong>Price:</strong> @Model.Price gold</p>
 
     <form asp-controller="Basket" asp-action="AddToBasket" method="post">
-        <input type="hidden" name="id" value="@Model.ItemId" />
+        <input type="hidden" name="itemId" value="@Model.ItemId" />
         <button type="submit" class="btn btn-success">Add to Basket</button>
     </form>
 
